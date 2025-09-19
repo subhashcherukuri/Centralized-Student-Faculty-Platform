@@ -7,10 +7,11 @@ export const useActivities = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const loadActivities = async () => {
       setLoading(true);
       try {
-        const res = await fetch('http://localhost:5000/api/activities');
+        const res = await fetch(`${apiUrl}/activities`);
         const data = await res.json();
         setActivities(data);
       } catch (e) {
@@ -23,7 +24,8 @@ export const useActivities = () => {
 
   const addActivity = async (activity: Omit<Activity, 'id' | 'submittedAt'>) => {
     try {
-      const res = await fetch('http://localhost:5000/api/activities', {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${apiUrl}/activities`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(activity)
@@ -41,7 +43,8 @@ export const useActivities = () => {
 
   const updateActivity = async (id: string, updates: Partial<Activity>) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/activities/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await fetch(`${apiUrl}/activities/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates)
@@ -55,8 +58,9 @@ export const useActivities = () => {
 
   const deleteActivity = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/activities/${id}`, { method: 'DELETE' });
-  setActivities(prev => prev.filter(a => a.id !== id));
+      const apiUrl = import.meta.env.VITE_API_URL;
+      await fetch(`${apiUrl}/activities/${id}`, { method: 'DELETE' });
+      setActivities(prev => prev.filter(a => a.id !== id));
     } catch (e) {}
   };
 
